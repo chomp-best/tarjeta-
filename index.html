@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliseo Studio | Business Card</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600&display=swap');
+
+        :root {
+            --card-width: 450px;
+            --card-height: 250px;
+        }
+
+        body {
+            background-color: #050505;
+            font-family: 'Inter', sans-serif;
+            perspective: 1500px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            touch-action: none;
+        }
+
+        .scene {
+            width: var(--card-width);
+            height: var(--card-height);
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out; /* Movimiento fluido siguiendo al mouse */
+        }
+
+        /* Clase para el retorno elástico (Spring back) */
+        .card.resetting {
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.8);
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #0f0f0f 0%, #050505 100%);
+        }
+
+        .card-back {
+            background: #000;
+            transform: rotateY(180deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .logo-symbol {
+            width: 34px;
+            height: 34px;
+            background: white;
+            color: black;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 17px;
+        }
+
+        .glint {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.04) 50%, rgba(255,255,255,0) 100%);
+            pointer-events: none;
+            border-radius: 20px;
+        }
+
+        /* Contenedor QR con fondo blanco para asegurar visibilidad */
+        .qr-container {
+            width: 65px;
+            height: 65px;
+            background: white;
+            padding: 5px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        @media (max-width: 500px) {
+            :root {
+                --card-width: 320px;
+                --card-height: 185px;
+            }
+            .card-face { padding: 25px; }
+            .qr-container { width: 55px; height: 55px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scene" id="scene">
+        <div class="card" id="card">
+            <!-- FRENTE -->
+            <div class="card-face card-front">
+                <div class="glint"></div>
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h1 class="text-white text-2xl font-light tracking-tight">Eliseo</h1>
+                        <p class="text-[9px] text-gray-500 uppercase tracking-[0.3em] mt-1">Arquitecto de Estrategias Digitales</p>
+                    </div>
+                    <div class="logo-symbol">e.</div>
+                </div>
+
+                <div class="flex justify-between items-end">
+                    <div class="space-y-4">
+                        <div class="space-y-0.5">
+                            <p class="text-[10px] text-gray-400 font-light italic">Fundador de Eliseo Studio</p>
+                            <div class="flex gap-3 text-gray-600 text-xs mt-2">
+                                <i class="fa-brands fa-instagram hover:text-white transition-colors"></i>
+                                <i class="fa-brands fa-linkedin-in hover:text-white transition-colors"></i>
+                                <i class="fa-solid fa-paper-plane hover:text-white transition-colors"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col items-end gap-2">
+                        <div class="qr-container">
+                            <!-- QR API Robusta con fondo blanco -->
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://chomp-best.github.io/VC/&color=000000&bgcolor=ffffff" 
+                                 alt="QR Contacto" class="w-full h-full">
+                        </div>
+                        <p class="text-[7px] text-gray-600 font-bold tracking-widest uppercase">Scan to connect</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REVERSO -->
+            <div class="card-face card-back">
+                <div class="glint"></div>
+                <div class="max-w-[75%]">
+                    <!-- Frase más chica y elegante -->
+                    <p class="text-white text-[11px] font-light italic leading-relaxed tracking-wide opacity-80">
+                        "En un mundo lleno de ruido, el silencio es el arma más poderosa"
+                    </p>
+                    <div class="mt-8 flex flex-col items-center gap-2">
+                        <div class="w-4 h-[1px] bg-white/20"></div>
+                        <p class="text-[7px] text-gray-600 uppercase tracking-[0.4em] font-medium">
+                            Eliseo Studio 2025
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed bottom-10 text-gray-700 text-[8px] uppercase tracking-[0.4em] pointer-events-none">
+        Mueve para inclinar · Click para girar
+    </div>
+
+    <script>
+        const scene = document.getElementById('scene');
+        const card = document.getElementById('card');
+        let isFlipped = false;
+        let isTransitioning = false;
+
+        // Lógica de movimiento (Primera versión restaurada)
+        const handleMove = (e) => {
+            if (isTransitioning) return;
+            
+            const rect = scene.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            // Ángulo basado en la distancia al centro
+            const rotateX = (centerY - y) / 6;
+            const rotateY = (x - centerX) / 6;
+            
+            if (!isFlipped) {
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            } else {
+                // Ajuste de ejes para la cara posterior
+                card.style.transform = `rotateY(${180 + rotateY}deg) rotateX(${-rotateX}deg)`;
+            }
+        };
+
+        const resetCard = () => {
+            isTransitioning = true;
+            card.classList.add('resetting');
+            
+            if (!isFlipped) {
+                card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+            } else {
+                card.style.transform = `rotateY(180deg) rotateX(0deg)`;
+            }
+            
+            setTimeout(() => {
+                card.classList.remove('resetting');
+                isTransitioning = false;
+            }, 600);
+        };
+
+        const toggleFlip = (e) => {
+            // No girar si se hace click en el QR o iconos
+            if (e.target.closest('.qr-container') || e.target.tagName === 'I') return;
+
+            isTransitioning = true;
+            isFlipped = !isFlipped;
+            card.classList.add('resetting');
+            
+            card.style.transform = isFlipped ? `rotateY(180deg)` : `rotateY(0deg)`;
+
+            setTimeout(() => {
+                card.classList.remove('resetting');
+                isTransitioning = false;
+            }, 600);
+        };
+
+        // Eventos
+        scene.addEventListener('mousemove', handleMove);
+        scene.addEventListener('mouseleave', resetCard);
+        scene.addEventListener('click', toggleFlip);
+
+        // Touch
+        scene.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            handleMove(e);
+        }, { passive: false });
+        scene.addEventListener('touchend', resetCard);
+    </script>
+</body>
+</html>
