@@ -40,10 +40,9 @@
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.1s ease-out; /* Movimiento fluido siguiendo al mouse */
+            transition: transform 0.1s ease-out;
         }
 
-        /* Clase para el retorno elástico (Spring back) */
         .card.resetting {
             transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -99,7 +98,6 @@
             border-radius: 20px;
         }
 
-        /* Contenedor QR con fondo blanco para asegurar visibilidad */
         .qr-container {
             width: 65px;
             height: 65px;
@@ -112,6 +110,27 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
 
+        .action-button {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 9px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .action-button:hover {
+            background: white;
+            color: black;
+            transform: translateY(-1px);
+        }
+
         @media (max-width: 500px) {
             :root {
                 --card-width: 320px;
@@ -119,6 +138,7 @@
             }
             .card-face { padding: 25px; }
             .qr-container { width: 55px; height: 55px; }
+            .action-button { padding: 5px 12px; font-size: 8px; }
         }
     </style>
 </head>
@@ -132,7 +152,7 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <h1 class="text-white text-2xl font-light tracking-tight">Eliseo</h1>
-                        <p class="text-[9px] text-gray-500 uppercase tracking-[0.3em] mt-1">Arquitecto de Estrategias Digitales</p>
+                        <p class="text-[9px] text-gray-500 uppercase tracking-[0.3em] mt-1 font-medium">Arquitecto de Estrategias Digitales</p>
                     </div>
                     <div class="logo-symbol">e.</div>
                 </div>
@@ -140,22 +160,26 @@
                 <div class="flex justify-between items-end">
                     <div class="space-y-4">
                         <div class="space-y-0.5">
-                            <p class="text-[10px] text-gray-400 font-light italic">Fundador de Eliseo Studio</p>
-                            <div class="flex gap-3 text-gray-600 text-xs mt-2">
-                                <i class="fa-brands fa-instagram hover:text-white transition-colors"></i>
-                                <i class="fa-brands fa-linkedin-in hover:text-white transition-colors"></i>
-                                <i class="fa-solid fa-paper-plane hover:text-white transition-colors"></i>
+                            <p class="text-[10px] text-gray-400 font-light italic opacity-70">Fundador de Eliseo Studio</p>
+                            <div class="flex gap-4 text-gray-600 text-[10px] mt-2">
+                                <i class="fa-brands fa-instagram hover:text-white transition-colors cursor-pointer"></i>
+                                <i class="fa-brands fa-linkedin-in hover:text-white transition-colors cursor-pointer"></i>
+                                <i class="fa-solid fa-paper-plane hover:text-white transition-colors cursor-pointer"></i>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="flex flex-col items-end gap-2">
+                    <div class="flex flex-col items-end gap-3">
                         <div class="qr-container">
-                            <!-- QR API Robusta con fondo blanco -->
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://chomp-best.github.io/VC/&color=000000&bgcolor=ffffff" 
                                  alt="QR Contacto" class="w-full h-full">
                         </div>
-                        <p class="text-[7px] text-gray-600 font-bold tracking-widest uppercase">Scan to connect</p>
+                        <div class="flex flex-col items-end gap-1.5">
+                            <p class="text-[7px] text-gray-600 font-bold tracking-widest uppercase opacity-80">Scan to connect</p>
+                            <a href="https://chomp-best.github.io/VC/" class="action-button" onclick="event.stopPropagation()">
+                                Explorar Studio
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -164,7 +188,6 @@
             <div class="card-face card-back">
                 <div class="glint"></div>
                 <div class="max-w-[75%]">
-                    <!-- Frase más chica y elegante -->
                     <p class="text-white text-[11px] font-light italic leading-relaxed tracking-wide opacity-80">
                         "En un mundo lleno de ruido, el silencio es el arma más poderosa"
                     </p>
@@ -189,7 +212,6 @@
         let isFlipped = false;
         let isTransitioning = false;
 
-        // Lógica de movimiento (Primera versión restaurada)
         const handleMove = (e) => {
             if (isTransitioning) return;
             
@@ -203,14 +225,12 @@
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
             
-            // Ángulo basado en la distancia al centro
             const rotateX = (centerY - y) / 6;
             const rotateY = (x - centerX) / 6;
             
             if (!isFlipped) {
                 card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
             } else {
-                // Ajuste de ejes para la cara posterior
                 card.style.transform = `rotateY(${180 + rotateY}deg) rotateX(${-rotateX}deg)`;
             }
         };
@@ -232,8 +252,8 @@
         };
 
         const toggleFlip = (e) => {
-            // No girar si se hace click en el QR o iconos
-            if (e.target.closest('.qr-container') || e.target.tagName === 'I') return;
+            // No girar si se hace clic en elementos interactivos
+            if (e.target.closest('.qr-container') || e.target.closest('a') || e.target.tagName === 'I') return;
 
             isTransitioning = true;
             isFlipped = !isFlipped;
@@ -247,12 +267,10 @@
             }, 600);
         };
 
-        // Eventos
         scene.addEventListener('mousemove', handleMove);
         scene.addEventListener('mouseleave', resetCard);
         scene.addEventListener('click', toggleFlip);
 
-        // Touch
         scene.addEventListener('touchmove', (e) => {
             e.preventDefault();
             handleMove(e);
