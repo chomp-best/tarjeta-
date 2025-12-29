@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eliseo Studio | Business Card</title>
+
+    <!-- SEO y Vista Previa (Meta tags para Redes Sociales) -->
+    <meta name="description" content="Arquitecto de Estrategias Digitales. Conecta conmigo para transformar tu presencia online.">
+    
+    <!-- Configuración Open Graph (WhatsApp, LinkedIn, Facebook) -->
+    <meta property="og:title" content="Eliseo Studio | Business Card">
+    <meta property="og:description" content="Arquitecto de Estrategias Digitales.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/chomp-best/tarjeta-/main/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://chomp-best.github.io/VC/">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/chomp-best/tarjeta-/main/og-image.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -132,6 +149,14 @@
             transform: translateY(-1px);
         }
 
+        @keyframes softPulse {
+            0%, 100% { opacity: 0.2; transform: scaleY(1); }
+            50% { opacity: 0.5; transform: scaleY(1.2); }
+        }
+        .indicator-line {
+            animation: softPulse 2s infinite ease-in-out;
+        }
+
         @media (max-width: 500px) {
             :root {
                 --card-width: 320px;
@@ -141,14 +166,6 @@
             .qr-container { width: 48px; height: 48px; border-radius: 7px; }
             .action-button { padding: 5px 12px; font-size: 7px; }
             .logo-symbol { width: 30px; height: 30px; font-size: 14px; border-radius: 6px; }
-        }
-
-        @keyframes softPulse {
-            0%, 100% { opacity: 0.2; transform: scaleY(1); }
-            50% { opacity: 0.5; transform: scaleY(1.2); }
-        }
-        .indicator-line {
-            animation: softPulse 2s infinite ease-in-out;
         }
     </style>
 </head>
@@ -212,7 +229,7 @@
         </div>
     </div>
 
-    <!-- Leyenda Corregida para Celular -->
+    <!-- Leyenda Inferior Animada -->
     <div class="fixed bottom-8 left-0 w-full flex flex-col items-center gap-2 pointer-events-none z-50">
         <div class="w-[1px] h-6 bg-white indicator-line rounded-full"></div>
         <span class="text-gray-500 text-[7px] sm:text-[9px] uppercase tracking-[0.3em] text-center px-6">
@@ -239,8 +256,8 @@
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
             
-            const rotateX = (centerY - y) / 6;
-            const rotateY = (x - centerX) / 6;
+            const rotateX = (centerY - y) / 10;
+            const rotateY = (x - centerX) / 10;
             
             if (!isFlipped) {
                 card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
@@ -252,13 +269,7 @@
         const resetCard = () => {
             isTransitioning = true;
             card.classList.add('resetting');
-            
-            if (!isFlipped) {
-                card.style.transform = `rotateX(0deg) rotateY(0deg)`;
-            } else {
-                card.style.transform = `rotateY(180deg) rotateX(0deg)`;
-            }
-            
+            card.style.transform = isFlipped ? `rotateY(180deg)` : `rotateY(0deg)`;
             setTimeout(() => {
                 card.classList.remove('resetting');
                 isTransitioning = false;
@@ -267,13 +278,10 @@
 
         const toggleFlip = (e) => {
             if (e.target.closest('.qr-container') || e.target.closest('a') || e.target.tagName === 'I') return;
-
             isTransitioning = true;
             isFlipped = !isFlipped;
             card.classList.add('resetting');
-            
             card.style.transform = isFlipped ? `rotateY(180deg)` : `rotateY(0deg)`;
-
             setTimeout(() => {
                 card.classList.remove('resetting');
                 isTransitioning = false;
