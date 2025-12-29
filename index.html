@@ -33,6 +33,7 @@
             position: relative;
             cursor: pointer;
             user-select: none;
+            z-index: 10;
         }
 
         .card {
@@ -134,11 +135,20 @@
         @media (max-width: 500px) {
             :root {
                 --card-width: 320px;
-                --card-height: 185px;
+                --card-height: 195px;
             }
-            .card-face { padding: 25px; }
-            .qr-container { width: 55px; height: 55px; }
-            .action-button { padding: 5px 12px; font-size: 8px; }
+            .card-face { padding: 22px; }
+            .qr-container { width: 48px; height: 48px; border-radius: 7px; }
+            .action-button { padding: 5px 12px; font-size: 7px; }
+            .logo-symbol { width: 30px; height: 30px; font-size: 14px; border-radius: 6px; }
+        }
+
+        @keyframes softPulse {
+            0%, 100% { opacity: 0.2; transform: scaleY(1); }
+            50% { opacity: 0.5; transform: scaleY(1.2); }
+        }
+        .indicator-line {
+            animation: softPulse 2s infinite ease-in-out;
         }
     </style>
 </head>
@@ -151,17 +161,17 @@
                 <div class="glint"></div>
                 <div class="flex justify-between items-start">
                     <div>
-                        <h1 class="text-white text-2xl font-light tracking-tight">Eliseo</h1>
+                        <h1 class="text-white sm:text-2xl text-xl font-light tracking-tight">Eliseo</h1>
                         <p class="text-[9px] text-gray-500 uppercase tracking-[0.3em] mt-1 font-medium">Arquitecto de Estrategias Digitales</p>
                     </div>
                     <div class="logo-symbol">e.</div>
                 </div>
 
                 <div class="flex justify-between items-end">
-                    <div class="space-y-4">
+                    <div class="sm:space-y-4 space-y-2">
                         <div class="space-y-0.5">
                             <p class="text-[10px] text-gray-400 font-light italic opacity-70">Fundador de Eliseo Studio</p>
-                            <div class="flex gap-4 text-gray-600 text-[10px] mt-2">
+                            <div class="flex gap-4 text-gray-600 text-[10px] sm:mt-2 mt-1">
                                 <i class="fa-brands fa-instagram hover:text-white transition-colors cursor-pointer"></i>
                                 <i class="fa-brands fa-linkedin-in hover:text-white transition-colors cursor-pointer"></i>
                                 <i class="fa-solid fa-paper-plane hover:text-white transition-colors cursor-pointer"></i>
@@ -169,7 +179,7 @@
                         </div>
                     </div>
                     
-                    <div class="flex flex-col items-end gap-3">
+                    <div class="flex flex-col items-end sm:gap-3 gap-2">
                         <div class="qr-container">
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://chomp-best.github.io/VC/&color=000000&bgcolor=ffffff" 
                                  alt="QR Contacto" class="w-full h-full">
@@ -187,11 +197,11 @@
             <!-- REVERSO -->
             <div class="card-face card-back">
                 <div class="glint"></div>
-                <div class="max-w-[75%]">
-                    <p class="text-white text-[11px] font-light italic leading-relaxed tracking-wide opacity-80">
+                <div class="max-w-[85%]">
+                    <p class="text-white sm:text-[11px] text-[10px] font-light italic leading-relaxed tracking-wide opacity-80">
                         "En un mundo lleno de ruido, el silencio es el arma más poderosa"
                     </p>
-                    <div class="mt-8 flex flex-col items-center gap-2">
+                    <div class="sm:mt-8 mt-5 flex flex-col items-center gap-2">
                         <div class="w-4 h-[1px] bg-white/20"></div>
                         <p class="text-[7px] text-gray-600 uppercase tracking-[0.4em] font-medium">
                             Eliseo Studio 2025
@@ -202,8 +212,12 @@
         </div>
     </div>
 
-    <div class="fixed bottom-10 text-gray-700 text-[8px] uppercase tracking-[0.4em] pointer-events-none">
-        Mueve para inclinar · Click para girar
+    <!-- Leyenda Corregida para Celular -->
+    <div class="fixed bottom-8 left-0 w-full flex flex-col items-center gap-2 pointer-events-none z-50">
+        <div class="w-[1px] h-6 bg-white indicator-line rounded-full"></div>
+        <span class="text-gray-500 text-[7px] sm:text-[9px] uppercase tracking-[0.3em] text-center px-6">
+            Mueve para inclinar · Click para girar
+        </span>
     </div>
 
     <script>
@@ -252,7 +266,6 @@
         };
 
         const toggleFlip = (e) => {
-            // No girar si se hace clic en elementos interactivos
             if (e.target.closest('.qr-container') || e.target.closest('a') || e.target.tagName === 'I') return;
 
             isTransitioning = true;
