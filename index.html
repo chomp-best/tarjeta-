@@ -68,6 +68,8 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            /* Fuerza el aislamiento de capas en mobile */
+            transform: translateZ(0);
         }
 
         /* Capa Reflectante Dinámica (Glint) */
@@ -149,7 +151,7 @@
             <div id="card" class="card-container preserve-3d">
                 
                 <!-- CARA FRONTAL (Metal Negro Pulido) -->
-                <div class="card-face bg-gradient-to-br from-[#1A1A1A] via-[#0A0A0A] to-[#000000] p-6 md:p-10 shadow-[0_50px_100px_-20px_rgba(0,0,0,1)]">
+                <div class="card-face bg-gradient-to-br from-[#1A1A1A] via-[#0A0A0A] to-[#000000] p-6 md:p-10 shadow-[0_50px_100px_-20px_rgba(0,0,0,1)]" style="transform: rotateY(0deg) translateZ(1px);">
                     <div id="shine-front" class="shine-layer"></div>
                     
                     <div class="flex justify-between items-start z-10">
@@ -187,7 +189,7 @@
                 </div>
 
                 <!-- CARA TRASERA (Simetría de Metal Negro) -->
-                <div class="card-face bg-gradient-to-br from-[#1A1A1A] via-[#0A0A0A] to-[#000000] p-8 md:p-16 flex flex-col items-center justify-center text-center shadow-2xl border border-white/10" style="transform: rotateY(180deg);">
+                <div class="card-face bg-gradient-to-br from-[#1A1A1A] via-[#0A0A0A] to-[#000000] p-8 md:p-16 flex flex-col items-center justify-center text-center shadow-2xl border border-white/10" style="transform: rotateY(180deg) translateZ(1px);">
                     <div id="shine-back" class="shine-layer"></div>
                     
                     <p class="quote-text font-light italic text-metallic px-4 z-10">
@@ -210,13 +212,6 @@
             </div>
         </div>
     </main>
-
-    <!-- Firma Footer -->
-    <footer class="fixed bottom-0 w-full p-8 md:p-12 text-center pointer-events-none">
-        <p class="text-[8px] md:text-[9px] font-bold tracking-ultra uppercase text-white/10 leading-relaxed max-w-[200px] md:max-w-xs mx-auto">
-            En un mundo lleno de ruido, el silencio es el arma más poderosa.
-        </p>
-    </footer>
 
     <script>
         // Inicializar iconos de Lucide
