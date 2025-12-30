@@ -207,7 +207,7 @@
         <div class="mt-8 md:mt-12 flex flex-col items-center gap-6 opacity-40">
             <div class="flex items-center gap-4">
                 <div class="w-8 h-[1px] bg-white/20"></div>
-                <span class="text-[8px] md:text-[9px] font-bold tracking-ultra uppercase animate-pulse-soft">Mueve para explorar • Click para girar</span>
+                <span class="text-[8px] md:text-[9px] font-bold tracking-ultra uppercase animate-pulse-soft">Inclina el dispositivo • Click para girar</span>
                 <div class="w-8 h-[1px] bg-white/20"></div>
             </div>
         </div>
@@ -223,6 +223,7 @@
         
         let isFlipped = false;
         let rotate = { x: 0, y: 0 };
+        let hasGyro = false;
 
         function updateTransform() {
             const yRotation = isFlipped ? 180 + rotate.y : rotate.y;
@@ -239,11 +240,12 @@
             shineBack.style.setProperty('--shine-y', `${shineY}%`);
         }
 
-        // Manejador unificado para Mouse y Touch
-        function handleInteraction(clientX, clientY) {
+        // Manejador para el ratón (Desktop)
+        window.addEventListener('mousemove', (e) => {
+            if (hasGyro) return; // Priorizar giroscopio si está activo
             const rect = card.getBoundingClientRect();
-            const x = clientX - rect.left;
-            const y = clientY - rect.top;
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
 
@@ -251,32 +253,72 @@
             rotate.y = (x - centerX) / 12;
 
             updateTransform();
-        }
-
-        window.addEventListener('mousemove', (e) => {
-            handleInteraction(e.clientX, e.clientY);
         });
 
         card.addEventListener('mouseleave', () => {
+            if (hasGyro) return;
             rotate.x = 0;
             rotate.y = 0;
             updateTransform();
         });
 
+        // Lógica de Giro y Permisos para Sensores (iOS requiere interacción del usuario)
         card.addEventListener('click', (e) => {
-            // No girar si se hace clic en enlaces o botones
             if (e.target.closest('a')) return;
+            
+            // Solicitar permisos de giroscopio en iOS si es necesario
+            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission()
+                    .then(permissionState => {
+                        if (permissionState === 'granted') {
+                            window.addEventListener('deviceorientation', handleOrientation);
+                        }
+                    })
+                    .catch(console.error);
+            }
+
             isFlipped = !isFlipped;
             updateTransform();
         });
 
-        // Soporte Táctil Optimizado
+        // Manejador del Giroscopio (Mobile)
+        function handleOrientation(event) {
+            hasGyro = true;
+            
+            // Beta: inclinación adelante/atrás (-180 a 180)
+            // Gamma: inclinación izquierda/derecha (-90 a 90)
+            let beta = event.beta; 
+            let gamma = event.gamma;
+
+            // Limitamos y suavizamos los valores para la rotación de la tarjeta
+            // Normalizamos para que la posición "neutra" sea con el teléfono frente al usuario
+            let xRot = (beta - 45) / 2; 
+            let yRot = gamma / 2;
+
+            // Restricción de rango para evitar rotaciones excesivas
+            rotate.x = Math.max(Math.min(xRot, 15), -15);
+            rotate.y = Math.max(Math.min(yRot, 15), -15);
+
+            updateTransform();
+        }
+
+        // Activar giroscopio automáticamente en Android/otros si no requiere permiso explícito
+        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission !== 'function') {
+            window.addEventListener('deviceorientation', handleOrientation);
+        }
+
+        // Soporte Táctil (Fallback)
         card.addEventListener('touchmove', (e) => {
+            if (hasGyro) return;
             const touch = e.touches[0];
-            handleInteraction(touch.clientX, touch.clientY);
+            const rect = card.getBoundingClientRect();
+            rotate.x = (rect.height / 2 - (touch.clientY - rect.top)) / 12;
+            rotate.y = ((touch.clientX - rect.left) - rect.width / 2) / 12;
+            updateTransform();
         });
 
         card.addEventListener('touchend', () => {
+            if (hasGyro) return;
             rotate.x = 0; rotate.y = 0;
             updateTransform();
         });
