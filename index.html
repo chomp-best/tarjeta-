@@ -3,305 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eliseo Studio | Business Card</title>
-
-    <!-- SEO y Vista Previa (Meta tags para Redes Sociales) -->
-    <meta name="description" content="Arquitecto de Estrategias Digitales. Conecta conmigo para transformar tu presencia online.">
+    <title>Eliseo Studio | Identidad Virtual Interactiva</title>
     
-    <!-- Configuración Open Graph (WhatsApp, LinkedIn, Facebook) -->
-    <meta property="og:title" content="Eliseo Studio | Business Card">
-    <meta property="og:description" content="Arquitecto de Estrategias Digitales.">
-    <!-- Usamos la URL absoluta de la imagen alojada en GitHub -->
-    <meta property="og:image" content="https://raw.githubusercontent.com/chomp-best/tarjeta-/main/og-image.png">
-    <meta property="og:image:secure_url" content="https://raw.githubusercontent.com/chomp-best/tarjeta-/main/og-image.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:url" content="https://chomp-best.github.io/VC/">
-    <meta property="og:type" content="website">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Eliseo Studio | Business Card">
-    <meta name="twitter:description" content="Arquitecto de Estrategias Digitales.">
-    <meta name="twitter:image" content="https://raw.githubusercontent.com/chomp-best/tarjeta-/main/og-image.png">
-
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons Library -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600&display=swap');
-
-        :root {
-            --card-width: 450px;
-            --card-height: 250px;
-        }
-
         body {
-            background-color: #050505;
             font-family: 'Inter', sans-serif;
-            perspective: 1500px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+            background-color: #000000;
+            color: #ffffff;
             margin: 0;
-            touch-action: none;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .scene {
-            width: var(--card-width);
-            height: var(--card-height);
+        .perspective-2000 {
+            perspective: 2000px;
+        }
+
+        .preserve-3d {
+            transform-style: preserve-3d;
+        }
+
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .tracking-ultra {
+            letter-spacing: 0.5em;
+        }
+
+        .tracking-tight-title {
+            letter-spacing: -0.05em;
+        }
+
+        /* Estructura de la Tarjeta */
+        .card-container {
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            width: 100%;
+            max-width: 500px;
+            height: 300px;
             position: relative;
             cursor: pointer;
-            user-select: none;
-            z-index: 10;
         }
 
-        .card {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.1s ease-out;
-        }
-
-        .card.resetting {
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .card-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 20px;
-            padding: 35px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.8);
-        }
-
-        .card-front {
-            background: linear-gradient(135deg, #0f0f0f 0%, #050505 100%);
-        }
-
-        .card-back {
-            background: #000;
-            transform: rotateY(180deg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .logo-symbol {
-            width: 34px;
-            height: 34px;
-            background: white;
-            color: black;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 17px;
-        }
-
-        .glint {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.04) 50%, rgba(255,255,255,0) 100%);
-            pointer-events: none;
-            border-radius: 20px;
-        }
-
-        .qr-container {
-            width: 65px;
-            height: 65px;
-            background: white;
-            padding: 5px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-
-        .action-button {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 6px 14px;
-            border-radius: 100px;
-            font-size: 9px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-
-        .action-button:hover {
-            background: white;
-            color: black;
-            transform: translateY(-1px);
-        }
-
-        @keyframes softPulse {
-            0%, 100% { opacity: 0.2; transform: scaleY(1); }
-            50% { opacity: 0.5; transform: scaleY(1.2); }
-        }
-        .indicator-line {
-            animation: softPulse 2s infinite ease-in-out;
-        }
-
-        @media (max-width: 500px) {
-            :root {
-                --card-width: 320px;
-                --card-height: 195px;
+        @media (min-width: 768px) {
+            .card-container {
+                height: 320px;
             }
-            .card-face { padding: 22px; }
-            .qr-container { width: 48px; height: 48px; border-radius: 7px; }
-            .action-button { padding: 5px 12px; font-size: 7px; }
-            .logo-symbol { width: 30px; height: 30px; font-size: 14px; border-radius: 6px; }
+        }
+
+        /* Capa Reflectante Dinámica (Glint) */
+        .shine-layer {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.03) 35%,
+                rgba(255, 255, 255, 0.12) 50%,
+                rgba(255, 255, 255, 0.03) 65%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            background-size: 200% 200%;
+            background-position: var(--shine-x, 50%) var(--shine-y, 50%);
+            pointer-events: none;
+            z-index: 5;
+            mix-blend-mode: overlay;
+        }
+
+        /* Acabado Metalizado para el Texto */
+        .text-metallic {
+            color: #A1A1AA;
+            background: linear-gradient(to bottom, #FFFFFF 0%, #A1A1AA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        }
+
+        .selection-white::selection {
+            background: white;
+            color: black;
+        }
+
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+        .animate-pulse-soft {
+            animation: pulse-soft 3s infinite ease-in-out;
         }
     </style>
 </head>
-<body>
+<body class="selection-white">
 
-    <div class="scene" id="scene">
-        <div class="card" id="card">
-            <!-- FRENTE -->
-            <div class="card-face card-front">
-                <div class="glint"></div>
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h1 class="text-white sm:text-2xl text-xl font-light tracking-tight">Eliseo</h1>
-                        <p class="text-[9px] text-gray-500 uppercase tracking-[0.3em] mt-1 font-medium">Arquitecto de Estrategias Digitales</p>
+    <!-- Navegación Superior -->
+    <nav class="fixed top-0 w-full p-8 md:p-12 flex justify-between items-center z-50 pointer-events-none">
+        <div class="flex items-center gap-3 pointer-events-auto">
+            <div class="w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center font-bold text-xl shadow-2xl">e.</div>
+            <span class="text-[10px] font-bold tracking-ultra uppercase opacity-40">Eliseo Studio</span>
+        </div>
+        
+        <div class="pointer-events-auto">
+            <button class="text-[9px] font-bold tracking-ultra uppercase opacity-40 hover:opacity-100 transition-opacity flex items-center gap-2">
+                Infraestructura <i data-lucide="maximize-2" class="w-3 h-3"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Área de Exhibición -->
+    <main class="min-h-screen relative w-full flex flex-col items-center justify-center p-6">
+        
+        <!-- Identificador de Objeto -->
+        <div class="mb-12">
+            <span class="py-1.5 px-4 border border-white/10 rounded-full text-[9px] font-bold tracking-ultra uppercase text-white/30 bg-white/5">
+                TARJETA DIGITAL
+            </span>
+        </div>
+
+        <!-- Escena 3D -->
+        <div class="perspective-2000 w-full flex justify-center items-center h-[350px]">
+            <div id="card" class="card-container preserve-3d">
+                
+                <!-- CARA FRONTAL (Metal Negro Pulido) -->
+                <div class="absolute inset-0 backface-hidden bg-gradient-to-br from-[#1A1A1A] via-[#0A0A0A] to-[#000000] rounded-[40px] p-10 border border-white/10 flex flex-col justify-between overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,1)]">
+                    <div id="shine-front" class="shine-layer"></div>
+                    
+                    <div class="flex justify-between items-start z-10">
+                        <div>
+                            <h1 class="text-4xl font-light tracking-tight-title text-metallic">Eliseo</h1>
+                            <p class="text-[10px] text-white/30 uppercase tracking-[0.3em] mt-3 font-semibold">Arquitecto de Estrategias Digitales</p>
+                        </div>
+                        <div class="w-12 h-12 bg-white text-black rounded-2xl flex items-center justify-center font-bold text-2xl shadow-xl">e.</div>
                     </div>
-                    <div class="logo-symbol">e.</div>
-                </div>
 
-                <div class="flex justify-between items-end">
-                    <div class="sm:space-y-4 space-y-2">
-                        <div class="space-y-0.5">
-                            <p class="text-[10px] text-gray-400 font-light italic opacity-70">Fundador de Eliseo Studio</p>
-                            <div class="flex gap-4 text-gray-600 text-[10px] sm:mt-2 mt-1">
-                                <i class="fa-brands fa-instagram hover:text-white transition-colors cursor-pointer"></i>
-                                <i class="fa-brands fa-linkedin-in hover:text-white transition-colors cursor-pointer"></i>
-                                <i class="fa-solid fa-paper-plane hover:text-white transition-colors cursor-pointer"></i>
+                    <div class="flex justify-between items-end z-10">
+                        <div class="space-y-6">
+                            <div class="space-y-1">
+                                <p class="text-[11px] text-white/20 italic font-light">Fundador de Eliseo Studio</p>
+                                <div class="w-8 h-[1px] bg-white/10"></div>
+                            </div>
+                            <div class="flex gap-6 text-white/20">
+                                <a href="#" class="hover:text-white transition-colors transform hover:scale-110"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                                <a href="#" class="hover:text-white transition-colors transform hover:scale-110"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                                <a href="#" class="hover:text-white transition-colors transform hover:scale-110"><i data-lucide="send" class="w-5 h-5"></i></a>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="flex flex-col items-end sm:gap-3 gap-2">
-                        <div class="qr-container">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://chomp-best.github.io/VC/&color=000000&bgcolor=ffffff" 
-                                 alt="QR Contacto" class="w-full h-full">
-                        </div>
-                        <div class="flex flex-col items-end gap-1.5">
-                            <p class="text-[7px] text-gray-600 font-bold tracking-widest uppercase opacity-80">Scan to connect</p>
-                            <a href="https://chomp-best.github.io/VC/" class="action-button" onclick="event.stopPropagation()">
-                                Explorar Studio
-                            </a>
+                        
+                        <div class="flex flex-col items-center gap-4">
+                            <!-- QR Container -->
+                            <div class="p-2 bg-white rounded-2xl shadow-2xl">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://eliseo.studio&color=000000&bgcolor=ffffff" alt="QR" class="w-14 h-14" />
+                            </div>
+                            <!-- Botón de Entrada -->
+                            <button class="bg-white/5 border border-white/10 hover:bg-white hover:text-black text-[9px] text-white font-bold tracking-ultra uppercase px-4 py-2 rounded-full transition-all duration-500 flex items-center gap-2 group">
+                                Entrar <i data-lucide="arrow-right" class="w-3 h-3 transition-transform group-hover:translate-x-1"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- REVERSO -->
-            <div class="card-face card-back">
-                <div class="glint"></div>
-                <div class="max-w-[85%]">
-                    <p class="text-white sm:text-[11px] text-[10px] font-light italic leading-relaxed tracking-wide opacity-80">
+                <!-- CARA TRASERA (Simetría de Metal Negro) -->
+                <div class="absolute inset-0 backface-hidden [transform:rotateY(180deg)] bg-gradient-to-br from-[#1A1A1A] via-[#0A0A0A] to-[#000000] rounded-[40px] p-16 flex flex-col items-center justify-center text-center shadow-2xl border border-white/10 overflow-hidden">
+                    <div id="shine-back" class="shine-layer"></div>
+                    
+                    <p class="text-2xl font-light italic leading-relaxed text-metallic px-4 z-10">
                         "En un mundo lleno de ruido, el silencio es el arma más poderosa"
                     </p>
-                    <div class="sm:mt-8 mt-5 flex flex-col items-center gap-2">
-                        <div class="w-4 h-[1px] bg-white/20"></div>
-                        <p class="text-[7px] text-gray-600 uppercase tracking-[0.4em] font-medium">
-                            Eliseo Studio 2025
-                        </p>
+                    <div class="mt-12 flex flex-col items-center gap-4 z-10">
+                        <div class="w-12 h-[1px] bg-white/10"></div>
+                        <p class="text-[9px] font-bold tracking-ultra uppercase opacity-30 text-white/50">Eliseo Studio • 2025</p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Leyenda Inferior Animada -->
-    <div class="fixed bottom-8 left-0 w-full flex flex-col items-center gap-2 pointer-events-none z-50">
-        <div class="w-[1px] h-6 bg-white indicator-line rounded-full"></div>
-        <span class="text-gray-500 text-[7px] sm:text-[9px] uppercase tracking-[0.3em] text-center px-6">
-            Mueve para inclinar · Click para girar
-        </span>
-    </div>
+        <!-- Guía de Interacción -->
+        <div class="mt-12 flex flex-col items-center gap-6 opacity-40">
+            <div class="flex items-center gap-4">
+                <div class="w-8 h-[1px] bg-white/20"></div>
+                <span class="text-[9px] font-bold tracking-ultra uppercase animate-pulse-soft">Mueve para explorar • Click para girar</span>
+                <div class="w-8 h-[1px] bg-white/20"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firma Footer -->
+    <footer class="fixed bottom-0 w-full p-12 text-center pointer-events-none">
+        <p class="text-[9px] font-bold tracking-ultra uppercase text-white/10 leading-relaxed max-w-xs mx-auto">
+            En un mundo lleno de ruido, el silencio es el arma más poderosa.
+        </p>
+    </footer>
 
     <script>
-        const scene = document.getElementById('scene');
+        // Inicializar iconos de Lucide
+        lucide.createIcons();
+
         const card = document.getElementById('card');
+        const shineFront = document.getElementById('shine-front');
+        const shineBack = document.getElementById('shine-back');
+        
         let isFlipped = false;
-        let isTransitioning = false;
+        let rotate = { x: 0, y: 0 };
 
-        const handleMove = (e) => {
-            if (isTransitioning) return;
+        function updateTransform() {
+            // Aplicar rotación base según estado del flip e inclinación del mouse
+            const yRotation = isFlipped ? 180 + rotate.y : rotate.y;
+            const xRotation = isFlipped ? -rotate.x : rotate.x;
+            card.style.transform = `rotateY(${yRotation}deg) rotateX(${xRotation}deg)`;
             
-            const rect = scene.getBoundingClientRect();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            // Sincronizar el efecto de brillo metálico (Glint)
+            // Cuando la tarjeta gira, invertimos el eje X del brillo para el reverso
+            const shineX = 50 + (rotate.y * 2.5);
+            const shineY = 50 + (rotate.x * 2.5);
+            
+            shineFront.style.setProperty('--shine-x', `${shineX}%`);
+            shineFront.style.setProperty('--shine-y', `${shineY}%`);
+            
+            // Para el reverso, el brillo debe moverse en sintonía con la nueva orientación
+            shineBack.style.setProperty('--shine-x', `${100 - shineX}%`);
+            shineBack.style.setProperty('--shine-y', `${shineY}%`);
+        }
 
-            const x = clientX - rect.left;
-            const y = clientY - rect.top;
-            
+        // Interacción Mouse
+        window.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
-            
-            const rotateX = (centerY - y) / 10;
-            const rotateY = (x - centerX) / 10;
-            
-            if (!isFlipped) {
-                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            } else {
-                card.style.transform = `rotateY(${180 + rotateY}deg) rotateX(${-rotateX}deg)`;
-            }
-        };
 
-        const resetCard = () => {
-            isTransitioning = true;
-            card.classList.add('resetting');
-            card.style.transform = isFlipped ? `rotateY(180deg)` : `rotateY(0deg)`;
-            setTimeout(() => {
-                card.classList.remove('resetting');
-                isTransitioning = false;
-            }, 600);
-        };
+            rotate.x = (centerY - y) / 15;
+            rotate.y = (x - centerX) / 15;
 
-        const toggleFlip = (e) => {
-            if (e.target.closest('.qr-container') || e.target.closest('a') || e.target.tagName === 'I') return;
-            isTransitioning = true;
+            updateTransform();
+        });
+
+        // Retorno a posición original
+        card.addEventListener('mouseleave', () => {
+            rotate.x = 0;
+            rotate.y = 0;
+            updateTransform();
+        });
+
+        // Alternar giro
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('a') || e.target.closest('button')) return;
             isFlipped = !isFlipped;
-            card.classList.add('resetting');
-            card.style.transform = isFlipped ? `rotateY(180deg)` : `rotateY(0deg)`;
-            setTimeout(() => {
-                card.classList.remove('resetting');
-                isTransitioning = false;
-            }, 600);
-        };
+            updateTransform();
+        });
 
-        scene.addEventListener('mousemove', handleMove);
-        scene.addEventListener('mouseleave', resetCard);
-        scene.addEventListener('click', toggleFlip);
+        // Soporte Táctil
+        card.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            const rect = card.getBoundingClientRect();
+            rotate.x = (rect.height / 2 - (touch.clientY - rect.top)) / 15;
+            rotate.y = ((touch.clientX - rect.left) - rect.width / 2) / 15;
+            updateTransform();
+        });
 
-        scene.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            handleMove(e);
-        }, { passive: false });
-        scene.addEventListener('touchend', resetCard);
+        card.addEventListener('touchend', () => {
+            rotate.x = 0; rotate.y = 0;
+            updateTransform();
+        });
     </script>
 </body>
 </html>
