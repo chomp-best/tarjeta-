@@ -45,20 +45,29 @@
             letter-spacing: -0.05em;
         }
 
-        /* Estructura de la Tarjeta */
+        /* Estructura de la Tarjeta con dimensiones adaptativas */
         .card-container {
             transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            width: 100%;
+            width: 90vw;
             max-width: 500px;
-            height: 300px;
+            height: clamp(250px, 60vw, 320px);
             position: relative;
             cursor: pointer;
+            transform-style: preserve-3d;
         }
 
-        @media (min-width: 768px) {
-            .card-container {
-                height: 320px;
-            }
+        /* Capas de cara de tarjeta */
+        .card-face {
+            position: absolute;
+            inset: 0;
+            border-radius: clamp(24px, 5vw, 40px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         /* Capa Reflectante Dinámica (Glint) */
@@ -101,104 +110,110 @@
         .animate-pulse-soft {
             animation: pulse-soft 3s infinite ease-in-out;
         }
+
+        /* Asegurar que el contenido del reverso no se desborde */
+        .quote-text {
+            font-size: clamp(1.1rem, 4vw, 1.5rem);
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body class="selection-white">
 
     <!-- Navegación Superior -->
-    <nav class="fixed top-0 w-full p-8 md:p-12 flex justify-between items-center z-50 pointer-events-none">
+    <nav class="fixed top-0 w-full p-6 md:p-12 flex justify-between items-center z-50 pointer-events-none">
         <div class="flex items-center gap-3 pointer-events-auto">
             <div class="w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center font-bold text-xl shadow-2xl">e.</div>
             <span class="text-[10px] font-bold tracking-ultra uppercase opacity-40">Eliseo Studio</span>
         </div>
         
         <div class="pointer-events-auto">
-            <button class="text-[9px] font-bold tracking-ultra uppercase opacity-40 hover:opacity-100 transition-opacity flex items-center gap-2">
+            <a href="https://chomp-best.github.io/VC/" class="text-[9px] font-bold tracking-ultra uppercase opacity-40 hover:opacity-100 transition-opacity flex items-center gap-2">
                 Infraestructura <i data-lucide="maximize-2" class="w-3 h-3"></i>
-            </button>
+            </a>
         </div>
     </nav>
 
     <!-- Área de Exhibición -->
-    <main class="min-h-screen relative w-full flex flex-col items-center justify-center p-6">
+    <main class="min-h-screen relative w-full flex flex-col items-center justify-center p-4">
         
         <!-- Identificador de Objeto -->
-        <div class="mb-12">
+        <div class="mb-8 md:mb-12">
             <span class="py-1.5 px-4 border border-white/10 rounded-full text-[9px] font-bold tracking-ultra uppercase text-white/30 bg-white/5">
                 TARJETA DIGITAL
             </span>
         </div>
 
         <!-- Escena 3D -->
-        <div class="perspective-2000 w-full flex justify-center items-center h-[350px]">
+        <div class="perspective-2000 w-full flex justify-center items-center h-[400px]">
             <div id="card" class="card-container preserve-3d">
                 
                 <!-- CARA FRONTAL (Metal Negro Pulido) -->
-                <div class="absolute inset-0 backface-hidden bg-gradient-to-br from-[#1A1A1A] via-[#0A0A0A] to-[#000000] rounded-[40px] p-10 border border-white/10 flex flex-col justify-between overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,1)]">
+                <div class="card-face bg-gradient-to-br from-[#1A1A1A] via-[#0A0A0A] to-[#000000] p-6 md:p-10 shadow-[0_50px_100px_-20px_rgba(0,0,0,1)]">
                     <div id="shine-front" class="shine-layer"></div>
                     
                     <div class="flex justify-between items-start z-10">
                         <div>
-                            <h1 class="text-4xl font-light tracking-tight-title text-metallic">Eliseo</h1>
-                            <p class="text-[10px] text-white/30 uppercase tracking-[0.3em] mt-3 font-semibold">Arquitecto de Estrategias Digitales</p>
+                            <h1 class="text-3xl md:text-4xl font-light tracking-tight-title text-metallic">Eliseo</h1>
+                            <p class="text-[8px] md:text-[10px] text-white/30 uppercase tracking-[0.3em] mt-2 md:mt-3 font-semibold">Arquitecto de Estrategias Digitales</p>
                         </div>
-                        <div class="w-12 h-12 bg-white text-black rounded-2xl flex items-center justify-center font-bold text-2xl shadow-xl">e.</div>
+                        <div class="w-10 h-10 md:w-12 md:h-12 bg-white text-black rounded-xl md:rounded-2xl flex items-center justify-center font-bold text-xl md:text-2xl shadow-xl">e.</div>
                     </div>
 
                     <div class="flex justify-between items-end z-10">
-                        <div class="space-y-6">
+                        <div class="space-y-4 md:space-y-6">
                             <div class="space-y-1">
-                                <p class="text-[11px] text-white/20 italic font-light">Fundador de Eliseo Studio</p>
+                                <p class="text-[10px] md:text-[11px] text-white/20 italic font-light">Fundador de Eliseo Studio</p>
                                 <div class="w-8 h-[1px] bg-white/10"></div>
                             </div>
-                            <div class="flex gap-6 text-white/20">
-                                <a href="#" class="hover:text-white transition-colors transform hover:scale-110"><i data-lucide="instagram" class="w-5 h-5"></i></a>
-                                <a href="#" class="hover:text-white transition-colors transform hover:scale-110"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
-                                <a href="#" class="hover:text-white transition-colors transform hover:scale-110"><i data-lucide="send" class="w-5 h-5"></i></a>
+                            <div class="flex gap-4 md:gap-6 text-white/20">
+                                <a href="#" class="hover:text-white transition-colors transform hover:scale-110"><i data-lucide="instagram" class="w-4 h-4 md:w-5 md:h-5"></i></a>
+                                <a href="#" class="hover:text-white transition-colors transform hover:scale-110"><i data-lucide="linkedin" class="w-4 h-4 md:w-5 md:h-5"></i></a>
+                                <a href="#" class="hover:text-white transition-colors transform hover:scale-110"><i data-lucide="send" class="w-4 h-4 md:w-5 md:h-5"></i></a>
                             </div>
                         </div>
                         
-                        <div class="flex flex-col items-center gap-4">
+                        <div class="flex flex-col items-center gap-3 md:gap-4">
                             <!-- QR Container -->
-                            <div class="p-2 bg-white rounded-2xl shadow-2xl">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://eliseo.studio&color=000000&bgcolor=ffffff" alt="QR" class="w-14 h-14" />
+                            <div class="p-1.5 md:p-2 bg-white rounded-xl md:rounded-2xl shadow-2xl">
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://eliseo.studio&color=000000&bgcolor=ffffff" alt="QR" class="w-12 h-12 md:w-14 md:h-14" />
                             </div>
-                            <!-- Botón de Entrada -->
-                            <button class="bg-white/5 border border-white/10 hover:bg-white hover:text-black text-[9px] text-white font-bold tracking-ultra uppercase px-4 py-2 rounded-full transition-all duration-500 flex items-center gap-2 group">
+                            <!-- Botón de Entrada (Redirección directa) -->
+                            <a href="https://chomp-best.github.io/VC/" onclick="event.stopPropagation()" class="bg-white/5 border border-white/10 hover:bg-white hover:text-black text-[8px] md:text-[9px] text-white font-bold tracking-ultra uppercase px-3 py-1.5 md:px-4 md:py-2 rounded-full transition-all duration-500 flex items-center gap-2 group">
                                 Entrar <i data-lucide="arrow-right" class="w-3 h-3 transition-transform group-hover:translate-x-1"></i>
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- CARA TRASERA (Simetría de Metal Negro) -->
-                <div class="absolute inset-0 backface-hidden [transform:rotateY(180deg)] bg-gradient-to-br from-[#1A1A1A] via-[#0A0A0A] to-[#000000] rounded-[40px] p-16 flex flex-col items-center justify-center text-center shadow-2xl border border-white/10 overflow-hidden">
+                <div class="card-face bg-gradient-to-br from-[#1A1A1A] via-[#0A0A0A] to-[#000000] p-8 md:p-16 flex flex-col items-center justify-center text-center shadow-2xl border border-white/10" style="transform: rotateY(180deg);">
                     <div id="shine-back" class="shine-layer"></div>
                     
-                    <p class="text-2xl font-light italic leading-relaxed text-metallic px-4 z-10">
+                    <p class="quote-text font-light italic text-metallic px-4 z-10">
                         "En un mundo lleno de ruido, el silencio es el arma más poderosa"
                     </p>
-                    <div class="mt-12 flex flex-col items-center gap-4 z-10">
+                    <div class="mt-8 md:mt-12 flex flex-col items-center gap-4 z-10">
                         <div class="w-12 h-[1px] bg-white/10"></div>
-                        <p class="text-[9px] font-bold tracking-ultra uppercase opacity-30 text-white/50">Eliseo Studio • 2025</p>
+                        <p class="text-[8px] md:text-[9px] font-bold tracking-ultra uppercase opacity-30 text-white/50">Eliseo Studio • 2025</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Guía de Interacción -->
-        <div class="mt-12 flex flex-col items-center gap-6 opacity-40">
+        <div class="mt-8 md:mt-12 flex flex-col items-center gap-6 opacity-40">
             <div class="flex items-center gap-4">
                 <div class="w-8 h-[1px] bg-white/20"></div>
-                <span class="text-[9px] font-bold tracking-ultra uppercase animate-pulse-soft">Mueve para explorar • Click para girar</span>
+                <span class="text-[8px] md:text-[9px] font-bold tracking-ultra uppercase animate-pulse-soft">Mueve para explorar • Click para girar</span>
                 <div class="w-8 h-[1px] bg-white/20"></div>
             </div>
         </div>
     </main>
 
     <!-- Firma Footer -->
-    <footer class="fixed bottom-0 w-full p-12 text-center pointer-events-none">
-        <p class="text-[9px] font-bold tracking-ultra uppercase text-white/10 leading-relaxed max-w-xs mx-auto">
+    <footer class="fixed bottom-0 w-full p-8 md:p-12 text-center pointer-events-none">
+        <p class="text-[8px] md:text-[9px] font-bold tracking-ultra uppercase text-white/10 leading-relaxed max-w-[200px] md:max-w-xs mx-auto">
             En un mundo lleno de ruido, el silencio es el arma más poderosa.
         </p>
     </footer>
@@ -215,59 +230,55 @@
         let rotate = { x: 0, y: 0 };
 
         function updateTransform() {
-            // Aplicar rotación base según estado del flip e inclinación del mouse
             const yRotation = isFlipped ? 180 + rotate.y : rotate.y;
             const xRotation = isFlipped ? -rotate.x : rotate.x;
             card.style.transform = `rotateY(${yRotation}deg) rotateX(${xRotation}deg)`;
             
-            // Sincronizar el efecto de brillo metálico (Glint)
-            // Cuando la tarjeta gira, invertimos el eje X del brillo para el reverso
             const shineX = 50 + (rotate.y * 2.5);
             const shineY = 50 + (rotate.x * 2.5);
             
             shineFront.style.setProperty('--shine-x', `${shineX}%`);
             shineFront.style.setProperty('--shine-y', `${shineY}%`);
             
-            // Para el reverso, el brillo debe moverse en sintonía con la nueva orientación
             shineBack.style.setProperty('--shine-x', `${100 - shineX}%`);
             shineBack.style.setProperty('--shine-y', `${shineY}%`);
         }
 
-        // Interacción Mouse
-        window.addEventListener('mousemove', (e) => {
+        // Manejador unificado para Mouse y Touch
+        function handleInteraction(clientX, clientY) {
             const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+            const x = clientX - rect.left;
+            const y = clientY - rect.top;
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
 
-            rotate.x = (centerY - y) / 15;
-            rotate.y = (x - centerX) / 15;
+            rotate.x = (centerY - y) / 12;
+            rotate.y = (x - centerX) / 12;
 
             updateTransform();
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            handleInteraction(e.clientX, e.clientY);
         });
 
-        // Retorno a posición original
         card.addEventListener('mouseleave', () => {
             rotate.x = 0;
             rotate.y = 0;
             updateTransform();
         });
 
-        // Alternar giro
         card.addEventListener('click', (e) => {
-            if (e.target.closest('a') || e.target.closest('button')) return;
+            // No girar si se hace clic en enlaces o botones
+            if (e.target.closest('a')) return;
             isFlipped = !isFlipped;
             updateTransform();
         });
 
-        // Soporte Táctil
+        // Soporte Táctil Optimizado
         card.addEventListener('touchmove', (e) => {
             const touch = e.touches[0];
-            const rect = card.getBoundingClientRect();
-            rotate.x = (rect.height / 2 - (touch.clientY - rect.top)) / 15;
-            rotate.y = ((touch.clientX - rect.left) - rect.width / 2) / 15;
-            updateTransform();
+            handleInteraction(touch.clientX, touch.clientY);
         });
 
         card.addEventListener('touchend', () => {
